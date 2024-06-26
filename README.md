@@ -1,2 +1,2 @@
-# nap-mail-copa-cup-wl-id-52
+# nap-mail-wc-league
 
