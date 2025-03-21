@@ -54,7 +54,7 @@ namespace Fanex.WCLeague.Business.Services
             var json = JsonConvert.SerializeObject(data, Formatting.Indented);
             File.WriteAllText($"{AppConfigService.Config.Path}/RawData.json", json);
 
-            return data;
+            return new Tuple<IEnumerable<SummaryModel>, IEnumerable<ProductDailyWLModel>, IEnumerable<AIOModel>>(data.FirstResultSet, data.SecondResultSet, data.ThirdResultSet);
         }
     }
 }
