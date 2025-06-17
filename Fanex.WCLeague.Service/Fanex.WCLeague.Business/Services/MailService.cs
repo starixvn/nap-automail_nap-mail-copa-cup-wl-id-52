@@ -25,7 +25,7 @@ namespace Fanex.WCLeague.Business.Services
             var mail = new Mail
             {
                 Title = "Auto Generated Report Administrator",
-                Subject = $"Automail Report - Daily CC WL Report - {DateTime.Today:yyyy/MM/dd}",
+                Subject = $"Automail Report - Daily WL Report - Club WC 2025 USA - {DateTime.Today:yyyy/MM/dd}",
                 Body = LoadBody(shortName),
                 Attachments = atts
             };
@@ -38,7 +38,7 @@ namespace Fanex.WCLeague.Business.Services
             var template = File.ReadAllText(@"Templates/EmailTemplate.cshtml");
             var tuple = new Tuple<string>(fileName);
             const string tplKey = "CCLeague-ID52-Template";
-            string result = Engine.Razor.IsTemplateCached(tplKey, null)
+            var result = Engine.Razor.IsTemplateCached(tplKey, null)
                 ? Engine.Razor.Run(tplKey, null, tuple)
                 : Engine.Razor.RunCompile(template, tplKey, model: tuple);
 
