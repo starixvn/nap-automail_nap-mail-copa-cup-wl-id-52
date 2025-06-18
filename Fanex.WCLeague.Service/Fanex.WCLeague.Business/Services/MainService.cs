@@ -6,36 +6,23 @@ namespace Fanex.WCLeague.Business.Services
 {
     public interface MainService
     {
-        JobMessage Execute();
+        JobMessage Execute(string league);
     }
 
-    public class MainServiceImp : MainService
+    public class MainServiceImp(
+        Log log,
+        MailService mailService,
+        DataService dataService,
+        ExcelService excelService)
+        : MainService
     {
-        private readonly Log log;
-        private readonly MailService mailService;
-        private readonly DataService dataService;
-        private readonly ExcelService excelService;
-
-        public MainServiceImp(
-            Log log,
-            MailService mailService,
-            DataService dataService,
-            ExcelService excelService)
-
-        {
-            this.log = log;
-            this.mailService = mailService;
-            this.dataService = dataService;
-            this.excelService = excelService;
-        }
-
-        public JobMessage Execute()
+        public JobMessage Execute(string league)
         {
             var result = new ExecuteResultModel();
             JobMessage jobMessage = new JobMessage();
             try
             {
-                result = SendNotification();
+                result = SendNotification(league);
             }
             catch (Exception e)
             {
@@ -57,9 +44,9 @@ namespace Fanex.WCLeague.Business.Services
             return jobMessage;
         }
 
-        private ExecuteResultModel SendNotification()
+        private ExecuteResultModel SendNotification(string league)
         {
-            var excelFile = excelService.Export();
+            var excelFile = excelService.Export(league);
             var mail = mailService.CreateMail(excelFile);
             return new ExecuteResultModel
             {

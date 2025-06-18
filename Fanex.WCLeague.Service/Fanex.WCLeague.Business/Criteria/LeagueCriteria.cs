@@ -1,9 +1,9 @@
 ﻿using Fanex.Data.Repository;
 using System;
 
-namespace Fanex.WCLeague.Business.Criterias
+namespace Fanex.WCLeague.Business.Criteria
 {
-    public class WCLeagueCriteria : CriteriaBase
+    public class LeagueCriteria() : CriteriaBase
     {
         public DateTime DateStart { get; set; }
 
@@ -11,7 +11,7 @@ namespace Fanex.WCLeague.Business.Criterias
 
         public string League { get; set; }
 
-        public override string GetSettingKey() => "Acc_Rpt_Automail_COPALeagueDailyPerformance";
+        public override string GetSettingKey() => "Acc_Rpt_Automail_ECLeagueDailyPerformance";
 
         public override bool IsValid() => true;
     }

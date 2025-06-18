@@ -8,21 +8,17 @@ namespace Fanex.WCLeague.Business.Services
 {
     public interface ExcelDailyWLService
     {
-        void RenderDailyWLLive(ExcelWorksheet sheetRawData, ExcelWorksheet sheetDailyWLData, IEnumerable<ProductDailyWLModel> dataDailyWL);
+        void RenderDailyWLLive(ExcelWorksheet sheetRawData, ExcelWorksheet sheetDailyWLData,
+            IEnumerable<ProductDailyWLModel> dataDailyWL);
 
-        void RenderDailyWLNonLive(ExcelWorksheet sheetRawData, ExcelWorksheet sheetDailyWLData, IEnumerable<ProductDailyWLModel> dataDailyWL);
+        void RenderDailyWLNonLive(ExcelWorksheet sheetRawData, ExcelWorksheet sheetDailyWLData,
+            IEnumerable<ProductDailyWLModel> dataDailyWL);
     }
 
-    public class ExcelDailyWLServiceImp : ExcelDailyWLService
+    public class ExcelDailyWLServiceImp(RefineDataService refineDataService) : ExcelDailyWLService
     {
-        private readonly RefineDataService refineDataService;
-
-        public ExcelDailyWLServiceImp(RefineDataService refineDataService)
-        {
-            this.refineDataService = refineDataService;
-        }
-
-        public void RenderDailyWLLive(ExcelWorksheet sheetRawData, ExcelWorksheet sheetDailyWLData, IEnumerable<ProductDailyWLModel> dataDailyWL)
+        public void RenderDailyWLLive(ExcelWorksheet sheetRawData, ExcelWorksheet sheetDailyWLData,
+            IEnumerable<ProductDailyWLModel> dataDailyWL)
         {
             var dataLive = refineDataService.RefineDailyWL(dataDailyWL, "Live");
             sheetRawData.Cells["O2"].LoadFromCollection(dataLive, true);
@@ -31,7 +27,8 @@ namespace Fanex.WCLeague.Business.Services
             {
                 const int startRow = 3;
                 var endRow = startRow + dataLive.Count() - 1;
-                var pivotTable = sheetDailyWLData.PivotTables.Add(sheetDailyWLData.Cells["B4"], sheetRawData.Cells[$"O2:W{endRow}"], "DailyWL-Live");
+                var pivotTable = sheetDailyWLData.PivotTables.Add(sheetDailyWLData.Cells["B4"],
+                    sheetRawData.Cells[$"O2:W{endRow}"], "DailyWL-Live");
                 FormatPivotTableDailyWL(pivotTable, "Product - Live");
 
                 var minDate = dataLive.Min(s => s.Date);
@@ -44,7 +41,8 @@ namespace Fanex.WCLeague.Business.Services
             }
         }
 
-        public void RenderDailyWLNonLive(ExcelWorksheet sheetRawData, ExcelWorksheet sheetDailyWLData, IEnumerable<ProductDailyWLModel> dataDailyWL)
+        public void RenderDailyWLNonLive(ExcelWorksheet sheetRawData, ExcelWorksheet sheetDailyWLData,
+            IEnumerable<ProductDailyWLModel> dataDailyWL)
         {
             var dataNonLive = refineDataService.RefineDailyWL(dataDailyWL, "Non-Live");
             sheetRawData.Cells["Y2"].LoadFromCollection(dataNonLive, true);
@@ -53,7 +51,8 @@ namespace Fanex.WCLeague.Business.Services
             {
                 const int startRow = 3;
                 var endRow = startRow + dataNonLive.Count() - 1;
-                var pivotTable = sheetDailyWLData.PivotTables.Add(sheetDailyWLData.Cells["G4"], sheetRawData.Cells[$"Y2:AG{endRow}"], "DailyWL-NonLive");
+                var pivotTable = sheetDailyWLData.PivotTables.Add(sheetDailyWLData.Cells["G4"],
+                    sheetRawData.Cells[$"Y2:AG{endRow}"], "DailyWL-NonLive");
                 FormatPivotTableDailyWL(pivotTable, "Product - Non - Live");
             }
             else

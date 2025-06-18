@@ -1,21 +1,14 @@
-﻿using Fanex.Data;
-using Fanex.Data.Repository;
-using Fanex.Logging;
-using Fanex.Logging.Sentry.RavenClient;
+﻿using Fanex.Data.Repository;
 using Fanex.MailDelivery.Client;
 using Fanex.WCLeague.Business.Services;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OfficeOpenXml;
-using SharpRaven;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Fanex.WCLeague.Service
 {
-    using System.IO;
     using Business.Models;
     using Newtonsoft.Json;
+    using System.IO;
 
     public static class ServiceCollectionExtensions
     {

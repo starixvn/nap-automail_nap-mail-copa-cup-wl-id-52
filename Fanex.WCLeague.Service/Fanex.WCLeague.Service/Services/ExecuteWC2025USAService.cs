@@ -4,9 +4,9 @@ using Fanex.WCLeague.Business.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Quartz;
 
-namespace Fanex.WCLeague.Service
+namespace Fanex.WCLeague.Service.Services
 {
-    public class ExecuteService : JobBase
+    public class ExecuteWC2025USAService : JobBase
     {
         protected override JobMessage Run(Schedule schedule, IJobExecutionContext jobContext)
         {
@@ -14,7 +14,7 @@ namespace Fanex.WCLeague.Service
             var serviceProvider = services.BuildServiceProvider();
 
             var mainService = serviceProvider.GetService<MainService>();
-            var result = mainService.Execute();
+            var result = mainService.Execute("WC2025USA");
             return new JobMessage
             {
                 JobStatus = result.JobStatus,

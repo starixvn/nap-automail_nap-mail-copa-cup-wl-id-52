@@ -13,16 +13,10 @@ namespace Fanex.WCLeague.Business.Services
         void RenderAIONonLive(ExcelWorksheet sheetRawData, ExcelWorksheet sheetAIOData, IEnumerable<AIOModel> dataAIO);
     }
 
-    public class ExcelAIOServiceImp : ExcelAIOService
+    public class ExcelAIOServiceImp(RefineDataService refineDataService) : ExcelAIOService
     {
-        private readonly RefineDataService refineDataService;
-
-        public ExcelAIOServiceImp(RefineDataService refineDataService)
-        {
-            this.refineDataService = refineDataService;
-        }
-
-        public void RenderAIOLive(ExcelWorksheet sheetRawData, ExcelWorksheet sheetAIOData, IEnumerable<AIOModel> dataAIO)
+        public void RenderAIOLive(ExcelWorksheet sheetRawData, ExcelWorksheet sheetAIOData,
+            IEnumerable<AIOModel> dataAIO)
         {
             var dataLive = refineDataService.RefineAIO(dataAIO, "Live");
             sheetRawData.Cells["AI2"].LoadFromCollection(dataLive, true);
@@ -31,7 +25,8 @@ namespace Fanex.WCLeague.Business.Services
             {
                 const int startRow = 3;
                 var endRow = startRow + dataLive.Count() - 1;
-                var pivotTable = sheetAIOData.PivotTables.Add(sheetAIOData.Cells["B4"], sheetRawData.Cells[$"AI2:AP{endRow}"], "AIO-Live");
+                var pivotTable = sheetAIOData.PivotTables.Add(sheetAIOData.Cells["B4"],
+                    sheetRawData.Cells[$"AI2:AP{endRow}"], "AIO-Live");
                 FormatPivotTableDailyWL(pivotTable, "AIO - Live");
 
                 var dateMin = dataAIO.Min(s => s.Date);
@@ -44,7 +39,8 @@ namespace Fanex.WCLeague.Business.Services
             }
         }
 
-        public void RenderAIONonLive(ExcelWorksheet sheetRawData, ExcelWorksheet sheetAIOData, IEnumerable<AIOModel> dataAIO)
+        public void RenderAIONonLive(ExcelWorksheet sheetRawData, ExcelWorksheet sheetAIOData,
+            IEnumerable<AIOModel> dataAIO)
         {
             var dataNonLive = refineDataService.RefineAIO(dataAIO, "Non-Live");
             sheetRawData.Cells["AR2"].LoadFromCollection(dataNonLive, true);
@@ -53,7 +49,8 @@ namespace Fanex.WCLeague.Business.Services
             {
                 const int startRow = 3;
                 var endRow = startRow + dataNonLive.Count() - 1;
-                var pivotTable = sheetAIOData.PivotTables.Add(sheetAIOData.Cells["G4"], sheetRawData.Cells[$"AR2:AY{endRow}"], "AIO-NonLive");
+                var pivotTable = sheetAIOData.PivotTables.Add(sheetAIOData.Cells["G4"],
+                    sheetRawData.Cells[$"AR2:AY{endRow}"], "AIO-NonLive");
                 FormatPivotTableDailyWL(pivotTable, "AIO - Non - Live");
             }
             else

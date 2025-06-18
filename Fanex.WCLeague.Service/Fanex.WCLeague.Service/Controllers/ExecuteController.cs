@@ -6,19 +6,12 @@ namespace Fanex.WCLeague.Service.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ExecuteController : ControllerBase
+    public class ExecuteController(MainService service) : ControllerBase
     {
-        private readonly MainService service;
-
-        public ExecuteController(MainService service)
-        {
-            this.service = service;
-        }
-
         [HttpGet]
         public JobMessage Get()
         {
-            return service.Execute();
+            return service.Execute("WC2025USA");
         }
     }
 }

@@ -6,34 +6,21 @@ namespace Fanex.WCLeague.Business.Services
 {
     public interface ExcelService
     {
-        string Export();
+        string Export(string league);
     }
 
-    public class ExcelServiceImp : ExcelService
+    public class ExcelServiceImp(
+        DataService dataService,
+        ExcelSummaryService excelSummary,
+        ExcelProductWLService excelProductWl,
+        ExcelDailyWLService excelDailyWl,
+        ExcelAIOService excelAio)
+        : ExcelService
     {
-        private readonly DataService dataService;
-        private readonly ExcelSummaryService excelSummary;
-        private readonly ExcelProductWLService excelProductWL;
-        private readonly ExcelDailyWLService excelDailyWL;
-        private readonly ExcelAIOService excelAIO;
-
-        public ExcelServiceImp(
-            DataService dataService,
-            ExcelSummaryService excelSummary,
-            ExcelProductWLService excelProductWL,
-            ExcelDailyWLService excelDailyWL,
-            ExcelAIOService excelAIO)
+        public string Export(string league)
         {
-            this.dataService = dataService;
-            this.excelSummary = excelSummary;
-            this.excelProductWL = excelProductWL;
-            this.excelDailyWL = excelDailyWL;
-            this.excelAIO = excelAIO;
-        }
-
-        public string Export()
-        {
-            using var excelPackage = new ExcelPackage(new FileInfo($"Templates/Template.xlsx"));
+            var leagueConfig = AppConfigService.Config.Leagues[league];
+            using var excelPackage = new ExcelPackage(new FileInfo(leagueConfig.TemplateName));
             using var sheetFormatSummary = excelPackage.Workbook.Worksheets["Format-Summary"];
             using var sheetFormatProductWL = excelPackage.Workbook.Worksheets["Format-ProductWL"];
             using var sheetRawData = excelPackage.Workbook.Worksheets.Add("RawData");
@@ -43,24 +30,24 @@ namespace Fanex.WCLeague.Business.Services
             using var sheetDailyWLData = excelPackage.Workbook.Worksheets["Daily WL"];
             using var sheetAIOData = excelPackage.Workbook.Worksheets["AIO"];
 
-            var data = dataService.QueryData();
+            var data = dataService.QueryData(leagueConfig);
 
             var dataSummary = data.Item1;
             var dataProductDailyWL = data.Item2;
             var dataAIO = data.Item3;
 
-            excelProductWL.RenderProductWL(sheetFormatProductWL, sheetProductWL, dataProductDailyWL);
+            excelProductWl.RenderProductWL(sheetFormatProductWL, sheetProductWL, dataProductDailyWL);
 
             excelSummary.RenderSummaryLive(sheetRawData, sheetSummaryData, dataSummary);
             excelSummary.RenderSummaryNonLive(sheetRawData, sheetSummaryData, dataSummary);
 
-            excelDailyWL.RenderDailyWLLive(sheetRawData, sheetDailyWLData, dataProductDailyWL);
-            excelDailyWL.RenderDailyWLNonLive(sheetRawData, sheetDailyWLData, dataProductDailyWL);
+            excelDailyWl.RenderDailyWLLive(sheetRawData, sheetDailyWLData, dataProductDailyWL);
+            excelDailyWl.RenderDailyWLNonLive(sheetRawData, sheetDailyWLData, dataProductDailyWL);
 
-            excelAIO.RenderAIOLive(sheetRawData, sheetAIOData, dataAIO);
-            excelAIO.RenderAIONonLive(sheetRawData, sheetAIOData, dataAIO);
+            excelAio.RenderAIOLive(sheetRawData, sheetAIOData, dataAIO);
+            excelAio.RenderAIONonLive(sheetRawData, sheetAIOData, dataAIO);
 
-            var fileName = $"Daily_WL_Report_Club_WC_2025_USA_For_{DateTime.Today:yyyy_MM_dd}.xlsx";
+            var fileName = $"{leagueConfig.FileName}_{DateTime.Today:yyyy_MM_dd}.xlsx";
             return SaveExcelFile(excelPackage, fileName);
         }
 

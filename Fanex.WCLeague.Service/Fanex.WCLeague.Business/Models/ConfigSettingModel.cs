@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Fanex.WCLeague.Business.Models
 {
@@ -14,12 +15,12 @@ namespace Fanex.WCLeague.Business.Models
 
         public string League { get; set; }
 
-        public bool IsCheckEnoughData { get; set; }
-
         public bool IsManual { get; set; }
 
         public string Path { get; set; }
 
         public string Password { get; set; }
+
+        public Dictionary<string, League> Leagues { get; set; } = new();
     }
 }

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
@@ -8,14 +8,16 @@
 
   <ItemGroup>
     <None Remove="App_Data\DBWH.bodb_dwrs.dwrs.xml" />
-    <None Remove="Templates\Template.xlsx" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="App_Data\DBWH.bodb_dwrs.dwrs.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Templates\Template.xlsx">
+    <Content Include="Templates\EURO2025-Template.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\WC2025USA-Template.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -42,6 +44,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="appsettings.PROD.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+<Content Update="appsettings.KLPROD.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
 <Content Update="appsettings.KLPROD.json">

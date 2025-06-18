@@ -7,23 +7,17 @@ namespace Fanex.WCLeague.Business.Services
 {
     public interface ExcelProductWLService
     {
-        void RenderProductWL(ExcelWorksheet sheetFormat, ExcelWorksheet sheetProductWL, IEnumerable<ProductDailyWLModel> dataProductWL);
+        void RenderProductWL(ExcelWorksheet sheetFormat, ExcelWorksheet sheetProductWL,
+            IEnumerable<ProductDailyWLModel> dataProductWL);
     }
 
-    public class ExcelProductWLServiceImp : ExcelProductWLService
+    public class ExcelProductWLServiceImp(
+        RefineDataService refineDataService,
+        DateServiceProfiver dateService)
+        : ExcelProductWLService
     {
-        private readonly RefineDataService refineDataService;
-        private readonly DateServiceProfiver dateService;
-
-        public ExcelProductWLServiceImp(
-            RefineDataService refineDataService,
-            DateServiceProfiver dateService)
-        {
-            this.refineDataService = refineDataService;
-            this.dateService = dateService;
-        }
-
-        public void RenderProductWL(ExcelWorksheet sheetFormat, ExcelWorksheet sheetProductWL, IEnumerable<ProductDailyWLModel> dataProductWL)
+        public void RenderProductWL(ExcelWorksheet sheetFormat, ExcelWorksheet sheetProductWL,
+            IEnumerable<ProductDailyWLModel> dataProductWL)
         {
             var date = dateService.DateService();
             var data = refineDataService.RefineProductWL(dataProductWL);

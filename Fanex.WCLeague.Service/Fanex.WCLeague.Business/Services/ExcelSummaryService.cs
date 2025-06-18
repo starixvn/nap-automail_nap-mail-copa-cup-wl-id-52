@@ -8,28 +8,25 @@ namespace Fanex.WCLeague.Business.Services
 {
     public interface ExcelSummaryService
     {
-        void RenderSummaryLive(ExcelWorksheet sheetRawData, ExcelWorksheet sheetSummaryData, IEnumerable<SummaryModel> dataSummary);
+        void RenderSummaryLive(ExcelWorksheet sheetRawData, ExcelWorksheet sheetSummaryData,
+            IEnumerable<SummaryModel> dataSummary);
 
-        void RenderSummaryNonLive(ExcelWorksheet sheetRawData, ExcelWorksheet sheetSummaryData, IEnumerable<SummaryModel> dataSummary);
+        void RenderSummaryNonLive(ExcelWorksheet sheetRawData, ExcelWorksheet sheetSummaryData,
+            IEnumerable<SummaryModel> dataSummary);
     }
 
-    public class ExcelSummaryServiceImp : ExcelSummaryService
+    public class ExcelSummaryServiceImp(RefineDataService refineDataService) : ExcelSummaryService
     {
-        private readonly RefineDataService refineDataService;
-
-        public ExcelSummaryServiceImp(RefineDataService refineDataService)
-        {
-            this.refineDataService = refineDataService;
-        }
-
-        public void RenderSummaryLive(ExcelWorksheet sheetRawData, ExcelWorksheet sheetSummaryData, IEnumerable<SummaryModel> dataSummary)
+        public void RenderSummaryLive(ExcelWorksheet sheetRawData, ExcelWorksheet sheetSummaryData,
+            IEnumerable<SummaryModel> dataSummary)
         {
             var dataLive = refineDataService.RefineSummary(dataSummary, "Live");
             sheetRawData.Cells["B2"].LoadFromCollection(dataLive, true);
             sheetSummaryData.Cells["B2"].Value = AppConfigService.Config.League;
             const int startRow = 2;
             var endRow = startRow + dataLive.Count();
-            var pivotTable = sheetSummaryData.PivotTables.Add(sheetSummaryData.Cells["B7"], sheetRawData.Cells[$"B2:G{endRow}"], "Summary-Live");
+            var pivotTable = sheetSummaryData.PivotTables.Add(sheetSummaryData.Cells["B7"],
+                sheetRawData.Cells[$"B2:G{endRow}"], "Summary-Live");
             FormatPivotTableSummary(pivotTable);
         }
 
@@ -48,13 +45,15 @@ namespace Fanex.WCLeague.Business.Services
             ExcelUtility.FormatPivotTableReal(pivotTable);
         }
 
-        public void RenderSummaryNonLive(ExcelWorksheet sheetRawData, ExcelWorksheet sheetSummaryData, IEnumerable<SummaryModel> dataSummary)
+        public void RenderSummaryNonLive(ExcelWorksheet sheetRawData, ExcelWorksheet sheetSummaryData,
+            IEnumerable<SummaryModel> dataSummary)
         {
             var dataNonLive = refineDataService.RefineSummary(dataSummary, "Non-Live");
             sheetRawData.Cells["H2"].LoadFromCollection(dataNonLive, true);
             const int startRow = 2;
             var endRow = startRow + dataNonLive.Count();
-            var pivotTable = sheetSummaryData.PivotTables.Add(sheetSummaryData.Cells["G7"], sheetRawData.Cells[$"H2:M{endRow}"], "Summary-Non-Live");
+            var pivotTable = sheetSummaryData.PivotTables.Add(sheetSummaryData.Cells["G7"],
+                sheetRawData.Cells[$"H2:M{endRow}"], "Summary-Non-Live");
             FormatPivotTableSummary(pivotTable);
         }
     }
