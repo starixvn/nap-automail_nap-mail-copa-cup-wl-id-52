@@ -14,7 +14,7 @@ namespace Fanex.WCLeague.Business.Services
             IEnumerable<SummaryModel>,
             IEnumerable<ProductDailyWLModel>,
             IEnumerable<AIOModel>
-            > QueryData();
+        > QueryData();
     }
 
     public class DataServiceImp : DataService
@@ -37,13 +37,13 @@ namespace Fanex.WCLeague.Business.Services
             IEnumerable<SummaryModel>,
             IEnumerable<ProductDailyWLModel>,
             IEnumerable<AIOModel>
-            > QueryData()
+        > QueryData()
         {
             var date = dateService.DateService();
             var criteria = new WCLeagueCriteria
             {
                 DateStart = date.DateStart,
-                DateEnd = date.DateEnd,
+                DateEnd = DateTime.Today.AddDays(-1),
                 League = AppConfigService.Config.League
             };
 
@@ -54,7 +54,8 @@ namespace Fanex.WCLeague.Business.Services
             var json = JsonConvert.SerializeObject(data, Formatting.Indented);
             File.WriteAllText($"{AppConfigService.Config.Path}/RawData.json", json);
 
-            return new Tuple<IEnumerable<SummaryModel>, IEnumerable<ProductDailyWLModel>, IEnumerable<AIOModel>>(data.FirstResultSet, data.SecondResultSet, data.ThirdResultSet);
+            return new Tuple<IEnumerable<SummaryModel>, IEnumerable<ProductDailyWLModel>, IEnumerable<AIOModel>>(
+                data.FirstResultSet, data.SecondResultSet, data.ThirdResultSet);
         }
     }
 }
