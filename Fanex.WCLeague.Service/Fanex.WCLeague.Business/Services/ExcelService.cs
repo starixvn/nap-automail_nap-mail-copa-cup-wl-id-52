@@ -60,7 +60,7 @@ namespace Fanex.WCLeague.Business.Services
             excelAIO.RenderAIOLive(sheetRawData, sheetAIOData, dataAIO);
             excelAIO.RenderAIONonLive(sheetRawData, sheetAIOData, dataAIO);
 
-            var fileName = $"Daily_CC_WL_Report_For_{DateTime.Today:yyyy_MM_dd}.xlsx";
+            var fileName = $"Daily_WL_Report_Club_WC_2025_USA_For_{DateTime.Today:yyyy_MM_dd}.xlsx";
             return SaveExcelFile(excelPackage, fileName);
         }
 
@@ -72,7 +72,7 @@ namespace Fanex.WCLeague.Business.Services
 
             var date = DateTime.Now;
             var name = $"{fileName}";
-            var path = $@"{AppConfigService.Config.Path}/{date:yyyy}/{date:MM}";
+            var path = $@"{AppConfigService.Config.Path}/{date:yyyyMMdd}";
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);

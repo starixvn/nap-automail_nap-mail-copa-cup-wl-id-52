@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="C:\Users\robert.tran\.nuget\packages\fanex.mailstation\2.1.2\contentFiles\any\net9.0\app.config.transform" />
+    <Content Remove="C:\Users\robert.tran\.nuget\packages\fanex.mailstation\2.1.2\contentFiles\any\net9.0\appsettings.json" />
+    <Content Remove="C:\Users\robert.tran\.nuget\packages\fanex.mailstation\2.1.2\contentFiles\any\net9.0\web.config.transform" />
+  </ItemGroup>
+
+  <ItemGroup>
 
     <PackageReference Include="EPPlus" Version="7.7.0" />
     <PackageReference Include="Fanex.Data" Version="4.3.3" />
