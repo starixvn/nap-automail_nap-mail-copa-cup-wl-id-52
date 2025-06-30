@@ -7,7 +7,7 @@ namespace Fanex.WCLeague.Business.Services
 {
     public interface ExcelProductWLService
     {
-        void RenderProductWL(ExcelWorksheet sheetFormat, ExcelWorksheet sheetProductWL,
+        void RenderProductWL(League league, ExcelWorksheet sheetFormat, ExcelWorksheet sheetProductWL,
             IEnumerable<ProductDailyWLModel> dataProductWL);
     }
 
@@ -16,13 +16,14 @@ namespace Fanex.WCLeague.Business.Services
         DateServiceProfiver dateService)
         : ExcelProductWLService
     {
-        public void RenderProductWL(ExcelWorksheet sheetFormat, ExcelWorksheet sheetProductWL,
+        public void RenderProductWL(League league, ExcelWorksheet sheetFormat, ExcelWorksheet sheetProductWL,
             IEnumerable<ProductDailyWLModel> dataProductWL)
         {
             var date = dateService.DateService();
             var data = refineDataService.RefineProductWL(dataProductWL);
 
-            sheetProductWL.Cells["B3"].Value = $"Date Range: {date.DateStart:dd/MM/yyyy} - {date.DateEnd:dd/MM/yyyy}";
+            sheetProductWL.Cells["B3"].Value =
+                $"Date Range: {league.DateStart:dd/MM/yyyy} - {league.DateEnd:dd/MM/yyyy}";
             sheetProductWL.Cells["B6"].LoadFromCollection(data, false);
             const int startRow = 6;
             var endRow = startRow + data.Count() - 1;

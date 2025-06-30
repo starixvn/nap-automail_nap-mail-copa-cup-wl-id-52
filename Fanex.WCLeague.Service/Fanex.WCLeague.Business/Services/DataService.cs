@@ -1,6 +1,7 @@
 ﻿using Fanex.Data.Repository;
 using Fanex.WCLeague.Business.Criteria;
 using Fanex.WCLeague.Business.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -16,7 +17,8 @@ namespace Fanex.WCLeague.Business.Services
     }
 
     public class DataServiceImp(
-        IDynamicRepository repository)
+        IDynamicRepository repository,
+        Log log)
         : DataService
     {
         public Tuple<
@@ -29,8 +31,11 @@ namespace Fanex.WCLeague.Business.Services
             {
                 DateStart = league.DateStart,
                 DateEnd = DateTime.Today.AddDays(-1),
-                League = AppConfigService.Config.League
+                League = league.LeagueName
             };
+
+            var json = JsonConvert.SerializeObject(criteria, Formatting.Indented);
+            log.Log($"Fanex.WCLeague.Service: {json}");
 
             var data = repository.FetchMultiple<SummaryModel, ProductDailyWLModel, AIOModel>(criteria);
 

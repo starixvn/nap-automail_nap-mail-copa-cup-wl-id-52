@@ -47,7 +47,7 @@ namespace Fanex.WCLeague.Business.Services
         private ExecuteResultModel SendNotification(string league)
         {
             var excelFile = excelService.Export(league);
-            var mail = mailService.CreateMail(excelFile);
+            var mail = mailService.CreateMail(excelFile, league);
             return new ExecuteResultModel
             {
                 Mail = mail,

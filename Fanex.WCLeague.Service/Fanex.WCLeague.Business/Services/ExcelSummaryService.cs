@@ -8,7 +8,7 @@ namespace Fanex.WCLeague.Business.Services
 {
     public interface ExcelSummaryService
     {
-        void RenderSummaryLive(ExcelWorksheet sheetRawData, ExcelWorksheet sheetSummaryData,
+        void RenderSummaryLive(League league, ExcelWorksheet sheetRawData, ExcelWorksheet sheetSummaryData,
             IEnumerable<SummaryModel> dataSummary);
 
         void RenderSummaryNonLive(ExcelWorksheet sheetRawData, ExcelWorksheet sheetSummaryData,
@@ -17,12 +17,12 @@ namespace Fanex.WCLeague.Business.Services
 
     public class ExcelSummaryServiceImp(RefineDataService refineDataService) : ExcelSummaryService
     {
-        public void RenderSummaryLive(ExcelWorksheet sheetRawData, ExcelWorksheet sheetSummaryData,
+        public void RenderSummaryLive(League league, ExcelWorksheet sheetRawData, ExcelWorksheet sheetSummaryData,
             IEnumerable<SummaryModel> dataSummary)
         {
             var dataLive = refineDataService.RefineSummary(dataSummary, "Live");
             sheetRawData.Cells["B2"].LoadFromCollection(dataLive, true);
-            sheetSummaryData.Cells["B2"].Value = AppConfigService.Config.League;
+            sheetSummaryData.Cells["B2"].Value = league.LeagueName;
             const int startRow = 2;
             var endRow = startRow + dataLive.Count();
             var pivotTable = sheetSummaryData.PivotTables.Add(sheetSummaryData.Cells["B7"],

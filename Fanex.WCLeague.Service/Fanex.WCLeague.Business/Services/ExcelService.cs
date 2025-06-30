@@ -36,9 +36,9 @@ namespace Fanex.WCLeague.Business.Services
             var dataProductDailyWL = data.Item2;
             var dataAIO = data.Item3;
 
-            excelProductWl.RenderProductWL(sheetFormatProductWL, sheetProductWL, dataProductDailyWL);
+            excelProductWl.RenderProductWL(leagueConfig, sheetFormatProductWL, sheetProductWL, dataProductDailyWL);
 
-            excelSummary.RenderSummaryLive(sheetRawData, sheetSummaryData, dataSummary);
+            excelSummary.RenderSummaryLive(leagueConfig, sheetRawData, sheetSummaryData, dataSummary);
             excelSummary.RenderSummaryNonLive(sheetRawData, sheetSummaryData, dataSummary);
 
             excelDailyWl.RenderDailyWLLive(sheetRawData, sheetDailyWLData, dataProductDailyWL);

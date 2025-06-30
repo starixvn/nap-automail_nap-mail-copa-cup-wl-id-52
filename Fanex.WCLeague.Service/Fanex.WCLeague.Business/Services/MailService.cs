@@ -9,23 +9,25 @@ namespace Fanex.WCLeague.Business.Services
 {
     public interface MailService
     {
-        Mail CreateMail(string fileName);
+        Mail CreateMail(string fileName, string league);
     }
 
     public class MailServiceImp : MailService
     {
-        public Mail CreateMail(string fileName)
+        public Mail CreateMail(string fileName, string league)
         {
             var atts = new List<MailAttachment>
             {
                 new MailAttachment(fileName, FileExtension.MS_EXCEL)
             };
             var shortName = new FileInfo(fileName).Name;
-
+            var subject = league == "WC2025USA"
+                ? $"Automail Report - Daily WL Report - Club WC 2025 USA - {DateTime.Today:yyyy/MM/dd}"
+                : $"Automail Report - Daily WL Report - UEFA WOMEN EURO 2025 (IN SWITZERLAND) - {DateTime.Today:yyyy/MM/dd}";
             var mail = new Mail
             {
                 Title = "Auto Generated Report Administrator",
-                Subject = $"Automail Report - Daily WL Report - Club WC 2025 USA - {DateTime.Today:yyyy/MM/dd}",
+                Subject = subject,
                 Body = LoadBody(shortName),
                 Attachments = atts
             };
